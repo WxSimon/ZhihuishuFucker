@@ -111,6 +111,7 @@ if __name__ == "__main__":
                 jienum += 1
 
             if not nextVideo(zhangnum, jienum, xiaojienum+1):
-                nextVideo(zhangnum+1, 1, 1)
+                if not nextVideo(zhangnum, jienum+1, 1):
+                    nextVideo(zhangnum+1, 1, 1)
 
     chromedriver.quit()
