@@ -36,27 +36,28 @@ def zhangVideo(zhang, jie, xiaojie):
         nextbtn.click()
     except:
         print("no element cancel")
+        return False
 
 def nextZhangVideo(zhang, jie, xiaojie):
     try:
         nextbtn = chromedriver.find_element_by_css_selector("li[_order='%d.%d']" % (zhang, jie))
         nextbtn.click()
     except:
-        zhangVideo(zhang, 1, 1)
+        return zhangVideo(zhang, 1, 1)
 
 def jieVideo(zhang, jie, xiaojie):
     try:
         nextbtn = chromedriver.find_element_by_css_selector("li[_order='%d.%d.%d']" % (zhang,jie,xiaojie))
         nextbtn.click()
     except:
-        nextZhangVideo(zhang + 1, 1, 1)
+        return nextZhangVideo(zhang + 1, 1, 1)
 
 def nextJieVideo(zhang, jie):
     try:
         nextbtn = chromedriver.find_element_by_css_selector("li[_order='%d.%d']" % (zhang,jie))
         nextbtn.click()
     except:
-        jieVideo(zhang, jie, 1)
+        return jieVideo(zhang, jie, 1)
 
 def nextVideo(zhang, jie, xiaojie):
     print("nextVideo")
@@ -65,13 +66,15 @@ def nextVideo(zhang, jie, xiaojie):
         nextbtn = chromedriver.find_element_by_css_selector("li[_order='%d.%d.%d']"% (zhang,jie,xiaojie))
         nextbtn.click()
     except:
-        nextJieVideo(zhang, jie+1)
+        return nextJieVideo(zhang, jie+1)
 
 
 if __name__ == "__main__":
 
-    driverpath = "__driverpath__/chromedriver"
+    driverpath = "/Users/sunkai07/Plugins/chromedriver"
     chromeOption = webdriver.ChromeOptions()
+    prefs = {"download.default_dictionary": "/users/sunkai/desktop"}
+    chromeOption.add_experimental_option("prefs", prefs)
 
     chromedriver = webdriver.Chrome(executable_path=driverpath, chrome_options=chromeOption)
 
@@ -81,8 +84,8 @@ if __name__ == "__main__":
     usernameInput = chromedriver.find_element_by_id("lUsername")
     pswInput = chromedriver.find_element_by_id("lPassword")
 
-    usernameInput.send_keys("username")
-    pswInput.send_keys("password")
+    usernameInput.send_keys("17600200421")
+    pswInput.send_keys("sskk999555")
 
     chromedriver.find_element_by_class_name("wall-sub-btn").click()
 
@@ -93,7 +96,7 @@ if __name__ == "__main__":
         sleep(10)
         tryPress()
         if checkVideo():
-            print("next")
+            print("切换视频")
 
             currentElement = chromedriver.find_element_by_class_name("current_play")
 
@@ -107,6 +110,7 @@ if __name__ == "__main__":
                 xiaojienum = 0
                 jienum += 1
 
-            nextVideo(zhangnum, jienum, xiaojienum+1)
+            if not nextVideo(zhangnum, jienum, xiaojienum+1):
+                nextVideo(zhangnum+1, 1, 1)
 
     chromedriver.quit()
